@@ -59,6 +59,24 @@ router.post('/',(req,res) => {
         })
     })
 })
+router.put('/:id',(req,res)=>{
+    const changes = req.body
+    Posts.update(req.params.id, changes)
+    .then(posts =>{
+        if (posts){
+            res.status(200).json(posts);
+
+        }else {
+            res.status(404).json({message:'Post could not be found'})
+        }
+    })
+    .catch(error =>{
+        console.log(error,"Update");
+        res.status(500).json({
+            message:'Error on the update'
+        })
+    })
+})
 router.delete('/:id', (req,res)=>{
     Posts.remove(req.params.id)
     .then(count =>{
