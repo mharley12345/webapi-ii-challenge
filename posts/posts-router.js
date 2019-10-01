@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.get('/',(req,res)=>{
     Posts.find(req.query)
-    .then(post =>{
-        res.status(200).json(post);
+    .then(posts =>{
+        res.status(200).json(posts);
     })
     .catch(error =>{
         console.log(error);
@@ -18,9 +18,10 @@ router.get('/',(req,res)=>{
 })
 router.get('/:id',(req,res)=> {
     Posts.findById(req.params.id)
-          .then(post =>{
-              if(post){
-                  res.status(200).json(post)
+    //  if (req.params.id === posts.id)
+          .then(posts =>{
+              if(posts.id === posts.id ){
+                  res.status(200).json(posts)
               } else {
                   res.status(404).json({message:'User not found'})
               } 
@@ -32,5 +33,58 @@ router.get('/:id',(req,res)=> {
              })
          })
 })
-
+router.get('/:id/comments',(req,res)=>{
+    Posts.findCommentById(req.params.id)
+    .then(comments =>{
+        if (comments) {
+            res.status(200).json(comments)
+        }else {
+            res.status(404).json({message:'User not found'})
+        }
+    })
+    .catch(error=>{
+        console.log(error,"Getting Comment");
+        res.status(500).json({message:'Server Error while retrieving comment'})
+    })
+})
+router.post('/',(req,res) => {
+    Posts.insert(req.body)
+    .then(posts =>{
+        res.status(201).json(posts)
+    })
+    .catch(error =>{
+        console.log(error,"Post Error");
+        res.status(500).json({
+            message:'Error adding posts'
+        })
+    })
+})
+router.delete('/:id', (req,res)=>{
+    Posts.remove(req.params.id)
+    .then(count =>{
+        if(count > 0){
+            res.status(200).json({message:'Post has been deleted'})
+        }else{
+            res.status(404).json({message:'Post not found'})
+        }
+    })
+    .catch(error =>{
+        console.log(error,"Delete");
+        res.status(500).json({
+            message:'Server Error deleting post'
+        })
+    })
+})
+// router.post('/:id/comments',(req,res)=>{
+//     Posts.insertComment(req.body)
+//      .then(comments =>{
+//         res.status(201).json(comments)
+//      })
+//      .catch(error =>{
+//         console.log(error,'Posting Comments');
+//         res.status(500).json({
+//             message:'Error posting comments'
+//         })
+//      })
+// })
 module.exports = router
