@@ -93,16 +93,16 @@ router.delete('/:id', (req,res)=>{
         })
     })
 })
-// router.post('/:id/comments',(req,res)=>{
-//     Posts.insertComment(req.body)
-//      .then(comments =>{
-//         res.status(201).json(comments)
-//      })
-//      .catch(error =>{
-//         console.log(error,'Posting Comments');
-//         res.status(500).json({
-//             message:'Error posting comments'
-//         })
-//      })
-// })
+router.post('/:id/comments',(req,res)=>{
+    Posts.insertComment(req.body)
+     .then(comments =>{
+        res.status(201).json(comments)
+     })
+     .catch(error =>{
+        console.log(error,'Posting Comments');
+        res.status(500).json({
+            message:'Error posting comments'
+        })
+     })
+})
 module.exports = router
