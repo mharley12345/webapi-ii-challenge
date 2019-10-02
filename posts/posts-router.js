@@ -21,6 +21,7 @@ router.get('/:id',(req,res)=> {
     //  if (req.params.id === posts.id)
           .then(posts =>{
               if(posts.id === posts.id ){
+                  
                   res.status(200).json(posts)
               } else {
                   res.status(404).json({message:'User not found'})
@@ -50,6 +51,7 @@ router.get('/:id/comments',(req,res)=>{
 router.post('/',(req,res) => {
     Posts.insert(req.body)
     .then(posts =>{
+     
         res.status(201).json(posts)
     })
     .catch(error =>{
@@ -64,7 +66,10 @@ router.put('/:id',(req,res)=>{
     Posts.update(req.params.id, changes)
     .then(posts =>{
         if (posts){
-            res.status(200).json(posts);
+            Posts.findById(res.params.id).then(changedUsers=>{
+                res.status(200).json(changedUsers)
+            })
+            // res.status(200).json(posts);
 
         }else {
             res.status(404).json({message:'Post could not be found'})
